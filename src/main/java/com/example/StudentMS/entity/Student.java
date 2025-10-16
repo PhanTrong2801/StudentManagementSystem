@@ -22,17 +22,18 @@ public class Student {
     private Long id;
 
     @NotBlank
-    @Column(nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
 
     @Email
     @NotBlank
-    @Column(nullable = false,unique = true)
+    @Column(name = "email", nullable = false,unique = true)
     private String email;
 
     @NotBlank
-    @Column(nullable = false)
+    @Column(name = "phone", nullable = false)
     private String phone;
 
+    @Column(name = "address")
     private String address;
 }

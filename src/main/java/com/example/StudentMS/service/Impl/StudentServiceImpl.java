@@ -7,14 +7,12 @@ import com.example.StudentMS.errorhandling.ResourceNotFoundException;
 import com.example.StudentMS.repository.StudentRepository;
 import com.example.StudentMS.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.management.relation.RelationNotFoundException;
 
 @Service
 @Transactional
@@ -34,7 +32,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public StudentResponse createStudent(Student request) {
+    public StudentResponse createStudent(StudentRequest request) {
         repo.findByEmail(request.getEmail()).ifPresent(s->{  //kiem tra co ton tai gia tri
             throw new DataIntegrityViolationException("Email already exits");
         });
@@ -93,4 +91,5 @@ public class StudentServiceImpl implements StudentService {
         Page<Student> page = repo.findByNameContainingIgnoreCaseOrEmailContainingIgnoreCase(q,q,pageable);
         return page.map(this::toResponse);
     }
+
 }
