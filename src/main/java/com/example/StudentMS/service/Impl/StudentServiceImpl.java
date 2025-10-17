@@ -2,7 +2,7 @@ package com.example.StudentMS.service.Impl;
 
 import com.example.StudentMS.dto.StudentRequest;
 import com.example.StudentMS.dto.StudentResponse;
-import com.example.StudentMS.entity.Student;
+import com.example.StudentMS.entity.StudentEnttity;
 import com.example.StudentMS.errorhandling.ResourceNotFoundException;
 import com.example.StudentMS.repository.StudentRepository;
 import com.example.StudentMS.service.StudentService;
@@ -21,7 +21,7 @@ public class StudentServiceImpl implements StudentService {
     @Autowired
     private StudentRepository repo;
 
-    private StudentResponse toResponse(Student s){
+    private StudentResponse toResponse(StudentEnttity s){
         return StudentResponse.builder()
                 .id(s.getId())
                 .name(s.getName())
@@ -37,27 +37,27 @@ public class StudentServiceImpl implements StudentService {
             throw new DataIntegrityViolationException("Email already exits");
         });
 
-        Student s = Student.builder()
+        StudentEnttity s = StudentEnttity.builder()
                 .name(request.getName())
                 .email(request.getEmail())
                 .phone(request.getPhone())
                 .address(request.getAddress())
                 .build();
 
-        Student saved = repo.save(s);
+        StudentEnttity saved = repo.save(s);
         return toResponse(saved);
 
     }
 
     @Override
     public StudentResponse getStudentById(Long id) {
-        Student s = repo.findById(id).orElseThrow(()->new ResourceNotFoundException("Student not found with id " + id));
+        StudentEnttity s = repo.findById(id).orElseThrow(()->new ResourceNotFoundException("Student not found with id " + id));
         return toResponse(s);
     }
 
     @Override
     public StudentResponse updateStudent(Long id, StudentRequest request) {
-        Student s = repo.findById(id).orElseThrow(()->new ResourceNotFoundException("Student not found with id "+id));
+        StudentEnttity s = repo.findById(id).orElseThrow(()->new ResourceNotFoundException("Student not found with id "+id));
 
         if (!s.getEmail().equals(request.getEmail())){
             repo.findByEmail(request.getEmail()).ifPresent(existing -> {
@@ -69,26 +69,26 @@ public class StudentServiceImpl implements StudentService {
         s.setPhone(request.getPhone());
         s.setAddress(request.getAddress());
 
-        Student saved = repo.save(s);
+        StudentEnttity saved = repo.save(s);
         return toResponse(saved);
     }
 
     @Override
     public void deleteStudent(Long id) {
-        Student s = repo.findById(id).orElseThrow(()->new ResourceNotFoundException("Student not found with id " + id));
+        StudentEnttity s = repo.findById(id).orElseThrow(()->new ResourceNotFoundException("Student not found with id " + id));
         repo.delete(s);
 
     }
 
     @Override
     public Page<StudentResponse> getAllStudents(Pageable pageable ) {
-        Page<Student> page = repo.findAll(pageable);
+        Page<StudentEnttity> page = repo.findAll(pageable);
         return page.map(this::toResponse);
     }
 
     @Override
     public Page<StudentResponse> searchStudents(String q, Pageable pageable) {
-        Page<Student> page = repo.findByNameContainingIgnoreCaseOrEmailContainingIgnoreCase(q,q,pageable);
+        Page<StudentEnttity> page = repo.findByNameContainingIgnoreCaseOrEmailContainingIgnoreCase(q,q,pageable);
         return page.map(this::toResponse);
     }
 
