@@ -81,7 +81,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Page<StudentResponse> getAllStudents(Pageable pageable) {
+    public Page<StudentResponse> getAllStudents(Pageable pageable ) {
         Page<Student> page = repo.findAll(pageable);
         return page.map(this::toResponse);
     }

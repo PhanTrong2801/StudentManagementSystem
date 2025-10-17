@@ -66,4 +66,6 @@ public class StudentController {
 
         return ResponseEntity.ok(ResponseWrapper.success(result));
     }
+
+
 }
